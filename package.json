@@ -13,13 +13,16 @@
     "medusa"
   ],
   "scripts": {
-    "build": "medusa build",
-    "seed": "medusa exec ./src/scripts/seed.ts",
-    "start": "medusa start",
-    "dev": "medusa develop",
-    "test:integration:http": "TEST_TYPE=integration:http NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",
-    "test:integration:modules": "TEST_TYPE=integration:modules NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",
-    "test:unit": "TEST_TYPE=unit NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit",
+    "clean": "cross-env ./node_modules/.bin/rimraf dist",
+    "build": "cross-env npm run clean && npm run build:server && npm run build:admin",
+    "build:server": "cross-env npm run clean && tsc -p tsconfig.server.json",
+    "build:admin": "cross-env medusa-admin build",
+    "watch": "cross-env tsc --watch",
+    "test": "cross-env jest",
+    "seed": "cross-env medusa exec ./src/scripts/seed.ts",
+    "start": "cross-env npm run build && medusa start",
+    "start:custom": "cross-env npm run build && node --preserve-symlinks --trace-warnings index.js",
+    "dev": "cross-env npm run build:server && medusa develop"
     "predeploy": "medusa db:migrate"
   },
   "dependencies": {
@@ -30,7 +33,11 @@
     "@medusajs/dashboard": "2.11.3",
     "@medusajs/draft-order": "^2.11.3",
     "@medusajs/admin-shared": "2.11.3",
-    "@medusajs/workflow-engine-redis": "2.11.3"
+    "@medusajs/workflow-engine-redis": "2.11.3",
+    "@medusajs/cache-inmemory": "^1.8.11",
+    "@medusajs/cache-redis": "^1.9.2",
+    "@medusajs/event-bus-local": "^1.9.9",
+    "@medusajs/event-bus-redis": "^1.8.14",
   },
   "devDependencies": {
     "@medusajs/test-utils": "2.11.3",
@@ -48,6 +55,12 @@
     "typescript": "^5.6.2",
     "vite": "^5.4.14",
     "yalc": "^1.0.0-pre.53"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.spec.json"
+      }
   },
   "packageManager": "pnpm@9.10.0",
   "engines": {
