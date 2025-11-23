@@ -22,7 +22,7 @@
     "seed": "cross-env medusa exec ./src/scripts/seed.ts",
     "start": "cross-env npm run build && medusa start",
     "start:custom": "cross-env npm run build && node --preserve-symlinks --trace-warnings index.js",
-    "dev": "cross-env npm run build:server && medusa develop"
+    "dev": "cross-env npm run build:server && medusa develop",
     "predeploy": "medusa db:migrate"
   },
   "dependencies": {
