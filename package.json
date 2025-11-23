@@ -56,12 +56,6 @@
     "vite": "^5.4.14",
     "yalc": "^1.0.0-pre.53"
   },
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.spec.json"
-      }
-  },
   "packageManager": "pnpm@9.10.0",
   "engines": {
     "node": ">=20",
